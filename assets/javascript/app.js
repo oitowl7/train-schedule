@@ -21,6 +21,9 @@ $(document).ready(function() {
   })
 });
 
+var namesUsed = [];
+var namesUsedBoolean = false;
+
 var checkWidth = function() {
   var windowsize = $(window).width();
   if (windowsize < 1200) {
@@ -35,20 +38,48 @@ var validateInput = function(){
   var destination = $("#destination-input").val().trim();
   var time = $("#time-input").val();
   var frequency = $("#frequency-input").val().trim();
-  if (name === "" || destination === "" || time === "" || frequency === ""){
-    console.log("need more shit");
-  }
-  checkDB(name);
-}
-
-var checkDB = function(name){
-  for (var i = 0; i < database.length; i++){
-    if (name === database[i].name){
-      alert("That train name already exists")
-      return
-    } else {
-      pushNewTrain();
+  for (var i = 0; i < namesUsed.length; i++){
+    if (name === namesUsed[i]){
+      namesUsedBoolean = true;
     }
   }
+  if (name === "" || destination === "" || time === "" || frequency === ""){
+    console.log("need more shit");
+    return;
+  } else if (namesUsedBoolean === true) {
+    console.log("that name's already used");
+    namesUsedBoolean = false;
+    return;
+  } else {
+      var newTrain = {
+        name: name,
+        destination: destination,
+        time: time,
+        frequency: frequency
+      };
+      database.ref().push(newTrain);
+      clearInput();
+  }
+
 }
 
+var clearInput = function(){
+  $("#user-entry-form")[0].reset();
+}
+
+database.ref().on("child_added", function(childSnapshot) {
+  console.log(childSnapshot.val().name);
+  var i = 0;
+  for (var key in childSnapshot.val().name[0]){
+    namesUsed.push(childSnapshot.val().name);
+    i++
+    console.log(namesUsed);
+  }
+
+
+  $("#append-info").append("<tr><td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().destination + "</td><td>" +
+  childSnapshot.val().frequency + "</td><td>" + "placeholder next" + "</td><td>" + "placeholder away" + "</td></tr>");
+
+
+
+})
