@@ -1,0 +1,21 @@
+body {
+	background-color: #314138;
+}
+.background-image{
+	position: absolute;
+	width: 100%;
+	height: auto;
+	top: 0;
+	left: 0;
+}
+
+.green-background {
+	background-color: #314138;
+}
+
+.white-text {
+	color: white;
+}
+.mar-top-20 {
+	margin-top: 20px;
+}
