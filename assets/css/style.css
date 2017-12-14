@@ -19,3 +19,9 @@ body {
 .mar-top-20 {
 	margin-top: 20px;
 }
+.align-top {
+	text-align: top;
+}
+.table-headers {
+	font-weight: bold;
+}
